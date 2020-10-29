@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration debug="false">
+
+  <appender name="info-out" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="Append" value="true"/>
+    <param name="File" value="${logging.path}/info.log"/>
+    <param name="DatePattern" value=".yyyy-MM-dd"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMax" value="info"/>
+      <param name="LevelMin" value="info"/>
+      <param name="AcceptOnMatch" value="true"/>
+    </filter>
+  </appender>
+
+  <appender name="warn-out" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="Append" value="true"/>
+    <param name="File" value="${logging.path}/warn.log"/>
+    <param name="DatePattern" value=".yyyy-MM-dd"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMax" value="warn"/>
+      <param name="LevelMin" value="warn"/>
+      <param name="AcceptOnMatch" value="true"/>
+    </filter>
+  </appender>
+
+  <appender name="error-out" class="org.apache.log4j.DailyRollingFileAppender">
+    <param name="Append" value="true"/>
+    <param name="File" value="${logging.path}/error.log"/>
+    <param name="DatePattern" value=".yyyy-MM-dd"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMax" value="error"/>
+      <param name="LevelMin" value="error"/>
+      <param name="AcceptOnMatch" value="true"/>
+    </filter>
+  </appender>
+
+  <appender name="std-out" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.out"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMax" value="INFO"/>
+      <param name="LevelMin" value="DEBUG"/>
+    </filter>
+  </appender>
+
+  <appender name="std-err" class="org.apache.log4j.ConsoleAppender">
+    <param name="Target" value="System.err"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+    </layout>
+    <filter class="org.apache.log4j.varia.LevelRangeFilter">
+      <param name="LevelMax" value="ERROR"/>
+      <param name="LevelMin" value="WARN"/>
+    </filter>
+  </appender>
+
+  <root>
+    <level value="${logging.level}"/>
+    <appender-ref ref="info-out"/>
+    <appender-ref ref="warn-out"/>
+    <appender-ref ref="error-out"/>
+    <appender-ref ref="std-out"/>
+    <appender-ref ref="std-err"/>
+  </root>
+</log4j:configuration>
