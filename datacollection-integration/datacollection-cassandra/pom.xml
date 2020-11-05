@@ -3,13 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>datacollection</artifactId>
+    <artifactId>datacollection-integration</artifactId>
     <groupId>com.datacollection</groupId>
     <version>3.1.1</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>datacollection-graphdb</artifactId>
+  <artifactId>datacollection-cassandra</artifactId>
 
   <dependencies>
     <dependency>
@@ -17,15 +17,16 @@
       <artifactId>datacollection-common</artifactId>
       <version>${project.version}</version>
     </dependency>
+    <!-- cassandra -->
     <dependency>
-      <groupId>com.datacollection</groupId>
-      <artifactId>datacollection-hbase</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.datacollection</groupId>
-      <artifactId>datacollection-cassandra</artifactId>
-      <version>${project.version}</version>
+      <groupId>com.datastax.cassandra</groupId>
+      <artifactId>cassandra-driver-core</artifactId>
+      <exclusions>
+        <exclusion>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
   </dependencies>
 </project>

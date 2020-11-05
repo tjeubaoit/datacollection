@@ -1,14 +1,14 @@
 package com.datacollection.graphdb;
 
+import com.datacollection.graphdb.backend.BackendFactory;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.datacollection.common.concurrency.FutureAdapter;
 import com.datacollection.common.utils.IterableAdapter;
 import com.datacollection.common.utils.Utils;
-import com.datacollection.graphdb.repository.EdgeRepository;
-import com.datacollection.graphdb.repository.RepositoryFactory;
-import com.datacollection.graphdb.repository.VertexRepository;
+import com.datacollection.graphdb.backend.EdgeBackend;
+import com.datacollection.graphdb.backend.VertexBackend;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,22 +25,22 @@ import java.util.Set;
  */
 public class DefaultSession implements GraphSession {
 
-    private final EdgeRepository edgeRepository;
-    private final VertexRepository vertexRepository;
+    private final EdgeBackend edgeBackend;
+    private final VertexBackend vertexBackend;
 
-    public DefaultSession(RepositoryFactory factory) {
-        this.edgeRepository = factory.edgeRepository();
-        this.vertexRepository = factory.vertexRepository();
+    public DefaultSession(BackendFactory factory) {
+        this.edgeBackend = factory.getEdgeBackend();
+        this.vertexBackend = factory.getVertexBackend();
     }
 
     @Override
-    public EdgeRepository edgeRepository() {
-        return this.edgeRepository;
+    public EdgeBackend edgeRepository() {
+        return this.edgeBackend;
     }
 
     @Override
-    public VertexRepository vertexRepository() {
-        return this.vertexRepository;
+    public VertexBackend vertexRepository() {
+        return this.vertexBackend;
     }
 
     @Override
@@ -79,43 +79,43 @@ public class DefaultSession implements GraphSession {
         Preconditions.checkArgument(Utils.notEquals(direction, Direction.BOTH));
 
         if (edgeLabels.length == 0) {
-            return edgeRepository.findByVertex(vertex, direction, null);
+            return edgeBackend.findByVertex(vertex, direction, null);
         } else if (edgeLabels.length == 1) {
-            return edgeRepository.findByVertex(vertex, direction, edgeLabels[0]);
+            return edgeBackend.findByVertex(vertex, direction, edgeLabels[0]);
         }
 
         List<Iterable<Edge>> iterableList = new ArrayList<>(edgeLabels.length);
         for (String label : edgeLabels) {
-            iterableList.add(edgeRepository.findByVertex(vertex, direction, label));
+            iterableList.add(edgeBackend.findByVertex(vertex, direction, label));
         }
         return Iterables.concat(iterableList);
     }
 
     @Override
     public ListenableFuture<EdgeSet> addEdges(long ts, Collection<Edge> edges) {
-        return FutureAdapter.from(edgeRepository.saveAll(edges), EdgeSet::convert);
+        return FutureAdapter.from(edgeBackend.saveAll(edges), EdgeSet::convert);
     }
 
     @Override
     public ListenableFuture<EdgeSet> removeEdge(long ts, String label, Vertex outVertex, Vertex inVertex) {
         Edge edge = Edge.create(label, outVertex, inVertex);
-        return FutureAdapter.from(edgeRepository.delete(edge), EdgeSet::convert);
+        return FutureAdapter.from(edgeBackend.delete(edge), EdgeSet::convert);
     }
 
     @Override
     public VertexSet vertices(String... labels) {
-        if (labels.length == 0) return VertexSet.convert(vertexRepository.findAll());
+        if (labels.length == 0) return VertexSet.convert(vertexBackend.findAll());
 
         List<Iterable<Vertex>> listVertices = new ArrayList<>(labels.length);
         for (String label : labels) {
-            listVertices.add(vertexRepository.findByLabel(label));
+            listVertices.add(vertexBackend.findByLabel(label));
         }
         return VertexSet.convert(Iterables.concat(listVertices));
     }
 
     @Override
     public Optional<Vertex> vertex(String id, String label) {
-        Vertex vertex = vertexRepository.findOne(label, id);
+        Vertex vertex = vertexBackend.findOne(label, id);
         return vertex != null ? Optional.of(vertex) : Optional.empty();
     }
 
@@ -136,17 +136,17 @@ public class DefaultSession implements GraphSession {
 
     @Override
     public ListenableFuture<VertexSet> addVertices(long ts, Collection<Vertex> vertices) {
-        return FutureAdapter.from(vertexRepository.saveAll(vertices), VertexSet::convert);
+        return FutureAdapter.from(vertexBackend.saveAll(vertices), VertexSet::convert);
     }
 
     @Override
     public ListenableFuture<VertexSet> deleteVertex(long ts, String id, String label) {
-        return FutureAdapter.from(vertexRepository.delete(Vertex.create(id, label)), VertexSet::convert);
+        return FutureAdapter.from(vertexBackend.delete(Vertex.create(id, label)), VertexSet::convert);
     }
 
     @Override
     public void close() {
-        edgeRepository.close();
-        vertexRepository.close();
+        edgeBackend.close();
+        vertexBackend.close();
     }
 }

@@ -2,7 +2,7 @@ package com.datacollection.graphdb;
 
 import com.datacollection.common.config.Properties;
 import com.datacollection.common.utils.Reflects;
-import com.datacollection.graphdb.repository.RepositoryFactory;
+import com.datacollection.graphdb.backend.BackendFactory;
 
 /**
  * Chứa các helper method để khởi tạo session làm việc với graphdb
@@ -31,7 +31,7 @@ public interface GraphDatabase {
      */
     static GraphSession open(String namespace, Properties props) {
         try {
-            RepositoryFactory factory = Reflects.newInstance(props.getProperty("graphdb.storage.factory.class"));
+            BackendFactory factory = Reflects.newInstance(props.getProperty("graphdb.storage.factory.class"));
             if (namespace != null) props.setProperty("graphdb.namespace", namespace);
             factory.configure(props);
             return new DefaultSession(factory);
