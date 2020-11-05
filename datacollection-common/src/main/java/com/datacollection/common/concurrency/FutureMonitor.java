@@ -13,11 +13,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Only for test
- *
- * @author <a href="https://github.com/tjeubaoit">tjeubaoit</a>
- */
 public class FutureMonitor extends AbstractLifeCycle {
 
     private final Map<Future<?>, Runnable> futureMap = new ConcurrentHashMap<>();

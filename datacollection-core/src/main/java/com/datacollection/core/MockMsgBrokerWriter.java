@@ -1,4 +1,4 @@
-package com.datacollection.common.mb;
+package com.datacollection.core;
 
 import com.google.common.util.concurrent.Futures;
 import com.datacollection.common.config.Properties;

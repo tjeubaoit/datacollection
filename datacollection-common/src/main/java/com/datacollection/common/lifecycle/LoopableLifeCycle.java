@@ -6,11 +6,9 @@ import com.datacollection.common.utils.Threads;
 import java.util.concurrent.TimeUnit;
 
 /**
- * LifeCycle có khả năng tự động repeat lại quá trình xử lý nếu
- * đã hoàn thành hoặc có lỗi xảy ra.
- *
- * @author <a href="https://github.com/tjeubaoit">tjeubaoit</a>
+ * Deprecated. Schedule processors with Quartz in new versions
  */
+@Deprecated
 public abstract class LoopableLifeCycle extends AbstractLifeCycle {
 
     private long sleepAfterDone;
@@ -45,36 +43,15 @@ public abstract class LoopableLifeCycle extends AbstractLifeCycle {
         }
     }
 
-    /**
-     * Thiết lập khoảng thời gian nghỉ giữa các lần xử lý
-     *
-     * @param sleepAfterDone thời gian nghỉ giữa các lần xử lý thành công
-     * @param sleepAfterFail thời gian nghỉ nếu lần cuối cùng xử lý thất bại
-     */
     protected void setSleepTime(long sleepAfterDone, long sleepAfterFail) {
         this.sleepAfterDone = sleepAfterDone;
         this.sleepAfterFail = sleepAfterFail;
     }
 
-    /**
-     * Thiết lập khoảng thời gian nghỉ giữa các lần xử lý từ config
-     *
-     * @param p chứa các thiết lập về thời gian nghỉ giữa các lần xử lý
-     */
     protected void setSleepTime(Properties p) {
         this.sleepAfterDone = p.getLongProperty("lifecycle.loop.done.sleep.s", 60);
         this.sleepAfterFail = p.getLongProperty("lifecycle.loop.fail.sleep.s", 30);
     }
 
-    /**
-     * Nơi chứa các xử lý chính sẽ được lặp đi lặp lại. Mỗi khi hàm này kết
-     * thúc một cách thành công (không có lỗi) sẽ được coi là một lần xử lý
-     * thành công và đối tượng sẽ lặp lại các xử lý này sau một khoảng thời
-     * gian xác định bởi <i>sleepAfterDone</i>. Ngược lại nếu có lỗi xảy ra
-     * đối tượng sẽ repeat các xử lý sau khoảng thời gian xác định bởi
-     * <i>sleepAfterFaile</i>.
-     *
-     * @throws Exception nếu có lỗi xảy ra
-     */
     protected abstract void onLoop() throws Exception;
 }

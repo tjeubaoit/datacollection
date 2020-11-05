@@ -6,9 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * @author <a href="https://github.com/tjeubaoit">tjeubaoit</a>
- */
+@SuppressWarnings("UnusedReturnValue")
 public abstract class AbstractLifeCycle implements LifeCycle {
 
     protected final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -20,46 +18,22 @@ public abstract class AbstractLifeCycle implements LifeCycle {
         Utils.addShutdownHook(this::stop);
     }
 
-    /**
-     * Class con kế thừa nên implement các cài đặt, khởi tạo cho đối tương ở đây.
-     * Giai đoạn này sẽ được gọi trước khi đối tượng được start.
-     */
     protected void onInitialize() {
     }
 
-    /**
-     * Các xử lý trong quá trình start của đối tượng, ngay sau khi quá trình init
-     * kết thúc. Kết thúc hàm này đối tượng được coi là started.
-     */
     protected void onStart() {
     }
 
-    /**
-     * Các xử lý chính của đối tượng sau khi started, đây là sự mở rộng của
-     * LifeCycle chuẩn và đối tượng vẫn có trạng thái là started.
-     */
     protected void onProcess() {
     }
 
-    /**
-     * Các xử lý khi đối tượng chuẩn bị stop. Sau khi hàm này kết thúc đối
-     * tượng được coi là stopped.
-     */
     protected void onStop() {
     }
 
-    /**
-     * @return true nếu quá trình xử lý của đối tượng bị cancel bởi user
-     * và ngược lại
-     */
     public final boolean isCanceled() {
         return this.flagStop.get();
     }
 
-    /**
-     * @return true nếu quá trình xử lý của đối tượng không bị cancel
-     * bởi user và ngược lại
-     */
     public final boolean isNotCanceled() {
         return !isCanceled();
     }

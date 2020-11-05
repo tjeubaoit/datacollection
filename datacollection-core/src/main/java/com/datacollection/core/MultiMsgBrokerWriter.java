@@ -1,4 +1,4 @@
-package com.datacollection.common.mb;
+package com.datacollection.core;
 
 import com.datacollection.common.concurrency.AllInOneFuture;
 import com.datacollection.common.concurrency.FutureAdapter;

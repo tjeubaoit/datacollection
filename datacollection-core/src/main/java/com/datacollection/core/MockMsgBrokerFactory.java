@@ -1,4 +1,4 @@
-package com.datacollection.common.mb;
+package com.datacollection.core;
 
 /**
  * @author <a href="https://github.com/tjeubaoit">tjeubaoit</a>

@@ -1,4 +1,4 @@
-package com.datacollection.common.mb;
+package com.datacollection.core;
 
 /**
  * TODO: Class description here.

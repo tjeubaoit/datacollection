@@ -1,4 +1,4 @@
-package com.datacollection.common.mb;
+package com.datacollection.core;
 
 import com.datacollection.common.config.Configurable;
 import com.datacollection.common.config.Properties;

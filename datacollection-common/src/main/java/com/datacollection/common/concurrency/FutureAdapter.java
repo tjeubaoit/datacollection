@@ -11,22 +11,12 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
-/**
- * TODO: Class description here.
- *
- * @author <a href="https://github.com/tjeubaoit">tjeubaoit</a>
- */
 public class FutureAdapter<S, R> implements ListenableFuture<R> {
 
     private final Future<S> src;
     private final Converter<S, R> converter;
     private final AtomicReference<R> result = new AtomicReference<>();
 
-    /**
-     *
-     * @param src
-     * @param converter
-     */
     public FutureAdapter(Future<S> src, Converter<S, R> converter) {
         this.src = src;
         this.converter = converter;
@@ -76,14 +66,6 @@ public class FutureAdapter<S, R> implements ListenableFuture<R> {
         }
     }
 
-    /**
-     *
-     * @param src
-     * @param converter
-     * @param <S>
-     * @param <R>
-     * @return
-     */
     public static <S, R> FutureAdapter<S, R> from(Future<S> src, Converter<S, R> converter) {
         return new FutureAdapter<>(src, converter);
     }
