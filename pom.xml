@@ -8,10 +8,12 @@
   <artifactId>datacollection</artifactId>
   <packaging>pom</packaging>
   <version>3.1.1</version>
+
   <modules>
     <module>datacollection-core</module>
     <module>datacollection-common</module>
     <module>datacollection-graphdb</module>
+    <module>datacollection-integration</module>
   </modules>
 
   <properties>
@@ -59,6 +61,12 @@
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
         <version>1.2.5</version>
+      </dependency>
+      <!-- https://mvnrepository.com/artifact/org.jetbrains/annotations -->
+      <dependency>
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>20.1.0</version>
       </dependency>
 
       <!-- logging -->
@@ -261,7 +269,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>com.datacollection.core.Main</mainClass>
+              <mainClass>com.datacollection.Main</mainClass>
             </manifest>
           </archive>
           <descriptorRefs>
